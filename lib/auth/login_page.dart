@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:practice/auth/signup_screen.dart';
 import 'package:practice/doctor/doctor_home_page.dart';
 import 'package:practice/patient/patient_home_page.dart';
@@ -21,58 +22,163 @@ class _LoginPageState extends State<LoginPage> {
   String password = '';
   bool _isLoading = false;
   bool _isNavigation = false;
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Login Page"),
-      ),
-      body: _isLoading
-          ? CircularProgressIndicator()
-          : Form(
-              key: _formKey,
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    TextFormField(
-                      decoration: InputDecoration(labelText: 'Email'),
-                      keyboardType: TextInputType.emailAddress,
-                      onChanged: (val) => email = val,
-                      validator: (val) =>
-                          val!.isEmpty ? 'Enter an email' : null,
+    return GestureDetector(
+      onTap: (){
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        body: _isLoading
+            ? CircularProgressIndicator()
+            : Form(
+                key: _formKey,
+                child: Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: SingleChildScrollView(
+                    child: Container(
+                      padding: EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 48,),
+                          Image.asset('assets/images/plus.png'),
+                          SizedBox(height: 10,),
+                          Text('Welcome!', style: GoogleFonts.poppins(fontSize: 32, fontWeight: FontWeight.w600),),
+                          Text('Login first', style: GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.w400),),
+                          SizedBox(height: 60,),
+                          SizedBox(
+                            height: 44,
+                            child: TextFormField(
+                              style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w500),
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Color(0xffF0EFFF),
+                                contentPadding: EdgeInsets.only(left: 10, right: 10),
+                                labelText: 'Email',
+                                labelStyle: GoogleFonts.poppins(fontSize: 13, color: Colors.grey.shade400),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0), // Rounded corners
+                                  borderSide: BorderSide(
+                                    color: Color(0xff0064FA), // Blue border color
+                                    width: 1.0, // Border width
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    color: Color(0xff0064FA), // Blue border color when focused
+                                    width: 1.0, // Border width
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    color: Color(0xff0064FA), // Blue border color when not focused
+                                    width: 1.0, // Border width
+                                  ),
+                                ),
+                              ),
+                              keyboardType: TextInputType.emailAddress,
+                              onChanged: (val) => email = val,
+                              validator: (val) => val!.isEmpty ? 'Enter an email' : null,
+                            ),
+                          ),
+                          SizedBox(height: 10,),
+                          SizedBox(
+                            height: 44,
+                            child: TextFormField(
+                              style: GoogleFonts.poppins(fontSize: 13, fontWeight: FontWeight.w500),
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Color(0xffF0EFFF),
+                                contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                                labelText: 'Password',
+                                labelStyle: GoogleFonts.poppins(fontSize: 13, color: Colors.grey.shade400),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    color: Color(0xff0064FA),
+                                    width: 1.0,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    color: Color(0xff0064FA),
+                                    width: 1.0,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    color: Color(0xff0064FA),
+                                    width: 1.0,
+                                  ),
+                                ),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _obscureText ? Icons.visibility_off : Icons.visibility,
+                                    color: Colors.grey.shade400,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _obscureText = !_obscureText;
+                                    });
+                                  },
+                                ),
+                              ),
+                              obscureText: _obscureText,
+                              keyboardType: TextInputType.text,
+                              onChanged: (val) => password = val,
+                              validator: (val) => val!.length < 6
+                                  ? 'Password must be at least 6 characters'
+                                  : null,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: ElevatedButton(
+                              onPressed: _login,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xff0064FA), // Blue background color
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0), // Rounded corners
+                                ),
+                                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12), // Optional: Padding inside the button
+                              ),
+                              child: Text(
+                                'Login',
+                                style: GoogleFonts.poppins(fontSize: 17, color: Colors.white, fontWeight: FontWeight.w600, letterSpacing: 0.4), // Text color
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(
+                            height: 20,
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: TextButton(
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => RegisterPage()));
+                              },
+                              child: Text('Don’t have an account? Register', style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w400),),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    TextFormField(
-                      decoration: InputDecoration(labelText: 'Password'),
-                      obscureText: true,
-                      keyboardType: TextInputType.text,
-                      onChanged: (val) => password = val,
-                      validator: (val) => val!.length < 6
-                          ? 'Password must be at least 6 characters'
-                          : null,
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    ElevatedButton(
-                      onPressed: _login,
-                      child: Text('Login'),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => RegisterPage()));
-                      },
-                      child: Text('Register'),
-                    ),
-                  ],
+                  ),
                 ),
               ),
-            ),
+      ),
     );
   }
 
