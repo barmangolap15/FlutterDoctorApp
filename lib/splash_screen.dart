@@ -71,22 +71,8 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0, right: 10.0),
-                child: Text(
-                  'D+',
-                  style: GoogleFonts.poppins(fontSize: 48, color: Colors.white, fontWeight: FontWeight.bold),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 10.0),
-                child: Text(
-                  textAlign: TextAlign.end,
-                  'Transforming\nHealthcare',
-                  style: GoogleFonts.poppins(fontSize: 28, color: Colors.white),
-                ),
-              ),
-              Image.asset('assets/images/dna_image.png', width: MediaQuery.of(context).size.width,),
+
+              Image.asset('assets/images/login_bg.png', width: MediaQuery.of(context).size.width,),
 
             ],
           ),
